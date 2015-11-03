@@ -1,0 +1,83 @@
+@import "constants.less";
+@import "radialGradient.less";
+@import "fadeIn.less";
+@import "transition.less";
+
+.blur {
+    -webkit-filter: blur(@blur);
+    -moz-filter: blur(@blur);
+    -o-filter: blur(@blur);
+    -ms-filter: blur(@blur);
+    filter: blur(@blur);
+    .Transition(1s);
+}
+
+.blurColorOverlay {
+	.Overlay();
+	.RadialGradient(rgb(69,72,77), rgba(0,0,0,1));
+}
+
+.fullScreenPicBlur {
+    position: relative;
+}
+
+.animatedFadeIn { 
+    .FadeIn(3.2s);
+    .Transition(1s);
+} 
+
+.fastFadeIn { 
+    .FadeIn(.6s);   
+}
+
+.patternOverlay {
+    .Overlay();
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4Ij48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMOCA4Wk04IDBMMCA4WiIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2U9IiMyMjIiPjwvcGF0aD4KPC9zdmc+");    
+}
+
+.Overlay() {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0.5;
+    .Transition(.5s);
+}
+
+.responsiveImage {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='.myBackground.jpg', sizingMethod='scale');
+    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='myBackground.jpg', sizingMethod='scale')";
+}
+
+.fullScreenPicBlur, #app {
+    height: 100%;
+}
+
+.blurHoverPreview {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    border: 1px solid #ddd;
+    width: 100px;
+}
+.blurHoverPreview img {
+    width: 100px;
+    height: auto;
+}
+
+.transparent {
+   opacity: 0.0;
+}

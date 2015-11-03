@@ -1,0 +1,11 @@
+.DS_STORE
+node_modules
+*~
+static
+build/
+bin/
+data
+typings/
+config
+*.log*
+.module-cache

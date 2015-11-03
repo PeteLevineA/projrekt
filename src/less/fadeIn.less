@@ -1,0 +1,45 @@
+@defaultDuration: 1s;
+
+.FadeIn(@duration: @defaultDuration) {
+	animation: fadeIn @duration;
+    animation-fill-mode: both; 
+    animation-timing-function: ease-in; 
+    -webkit-animation: fadeIn @duration; 
+    -webkit-animation-fill-mode: both; 
+    -webkit-animation-timing-function: ease-in; 
+    -moz-animation: fadeIn @duration; /* Firefox < 16 */
+    -moz-animation-fill-mode: both;
+    -moz-animation-timing-function: ease-in;
+    -ms-animation: fadeIn @duration; /* Internet Explorer */
+    -ms-animation-fill-mode: both;
+    -ms-animation-timing-function: ease-in;
+    -o-animation: fadeIn @duration; /* Opera < 12.1 */
+    -o-animation-fill-mode: both;
+    -o-animation-timing-function: ease-in;
+}
+
+@-webkit-keyframes fadeIn { 
+    0% {opacity: 0;} 
+    20% {opacity: 0;}
+    100% {opacity: 1;} 
+}
+@-moz-keyframes fadeIn { 
+    0% {opacity: 0;} 
+    20% {opacity: 0;}
+    100% {opacity: 1;} 
+} 
+@-ms-keyframes fadeIn { 
+    0% {opacity: 0;} 
+    20% {opacity: 0;}
+    100% {opacity: 1;} 
+} 
+@-o-keyframes fadeIn { 
+    0% {opacity: 0;} 
+    20% {opacity: 0;}
+    100% {opacity: 1;} 
+} 
+@keyframes fadeIn { 
+    0% {opacity: 0;} 
+    20% {opacity: 0;}
+    100% {opacity: 1;} 
+}
