@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "test": "mocha --compilers .:tests/compiler.js -r tests/test-helper.js tests/*Test.jsx"
   },
   "dependencies": {
     "react": "~0.14.2",
