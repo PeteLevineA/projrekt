@@ -25,7 +25,7 @@ router.get('/add', function (req, res, next) {
         name: req.query.name,
         title: req.query.title
     });
-    projectrEntry.save(function (err) {
+    projectEntry.save(function (err) {
         if (!err)
         {
             res.json({

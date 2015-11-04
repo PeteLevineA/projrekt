@@ -20,3 +20,6 @@ Front-end:
  - LESS CSS Pre-processor [http://lesscss.org/](http://lesscss.org/)
  - Node Fetch a Fetch pollyfill [https://www.npmjs.com/package/node-fetch](https://www.npmjs.com/package/node-fetch)
  - Mocha Unit Testing [https://mochajs.org/](https://mochajs.org/)
+ 
+ Testing:
+ Test Helper and Mocha JSX Compiler inspired by [Kahn Academy Components](https://github.com/Khan/react-components) and updated to use React 0.14.2
