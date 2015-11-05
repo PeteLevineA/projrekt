@@ -13,15 +13,23 @@ var DropDownItem = React.createClass({
 		this.itemSelected.call(null, this.props.identifier);
 	},
 	render: function() {
-		var instOfTypedVal = this.props.value.indexOf(this.props.typedValue);
-		var typedValHtml = '<span className="bold">' + this.props.value.subString(instOfTypedVal, this.props.typedValue.length) + '</span>';
-		var startOfString = this.props.value.subString(0, instOfTypedVal);
-		var typedValLen = this.props.typedValue.length;
-		var restOfStringLen = this.props.value.length - typedValLen - startOfString.length;
-		var endOfString = this.props.value.subString(instOfTypedVal+this.props.typedValue.length, restOfStringLen);
-		var finalTypedValue = startOfString + typedValHtml + endOfString;
+		var startOfString = '',
+			boldString = '',
+			endOfString = this.props.value,
+			valToCompare = this.props.value.toLowerCase(),
+			typedVal = this.props.typedValue.toLowerCase(),
+			instOfTypedVal = valToCompare.indexOf(typedVal);
+		
+		if( instOfTypedVal > -1 )
+		{
+			boldString = this.props.value.substr(instOfTypedVal, this.props.typedValue.length);
+			startOfString = this.props.value.substr(0, instOfTypedVal);
+			var typedValLen = this.props.typedValue.length;
+			var restOfStringLen = this.props.value.length - typedValLen - startOfString.length;
+			endOfString = this.props.value.substr(instOfTypedVal+this.props.typedValue.length, restOfStringLen);
+		}
 		return <div className="dropDownItem" ref="dropDownItem" onClick={this.handleClick}>
-				{finalTypedValue}
+				{startOfString}<span className="bold">{boldString}</span>{endOfString}
 			</div>;
 	}
 });

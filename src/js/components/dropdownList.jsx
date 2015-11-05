@@ -14,9 +14,18 @@ var DropDownList = React.createClass({
 			]
 		}
 	},
+	getInitialState: function() {
+		return {
+			typedValue: '',
+			items: this.props.items
+		}	
+	},
 	handleChange:function(e) {
 		var value = e.target.value;
-		this.searchForValue(value);
+		this.setState({
+			typedValue: value
+		});
+		this.searchForValues(value);
 	},
 	handleBlur: function(e) {
 		var value = e.target.value;
@@ -39,18 +48,24 @@ var DropDownList = React.createClass({
 			]
 		});
 	},
+	itemSelected: function(item) {
+	
+	},
 	render: function(){
+		var self = this;
 		return <div className="dropDownList">
 				<div className="dropDownInput">
 					<input type="text" ref="input" 
-					autocomplete="on" placeholder="start typing to begin..."
+					autoComplete="on" placeholder="start typing to begin..."
 					onChange={this.handleChange}
 					onBlur={this.handleBlur} />
 				</div>
-				{this.props.items.map(function(item, i) {
-					return <DropDownItem identifier={item.key} value={item.value} typedValue={this.state.typedValue}>
+				<div className="dropDownItemList">
+				{this.state.items.map(function(item, i) {
+					return <DropDownItem itemSelected={self.itemSelected} key={item.key} identifier={item.key} value={item.value} typedValue={self.state.typedValue}>
 						</DropDownItem>;
 				})}
+				</div>
 			</div>;
 	}
 });

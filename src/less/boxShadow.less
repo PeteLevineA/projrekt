@@ -1,0 +1,14 @@
+@defaultHoriz: 0px;
+@defaultVert: 6px;
+@defaultBlurRadius: 20px;
+@defaultSpread: 2px;
+
+@defaultColor: rgba(0,0,0,0.75);
+
+.BoxShadow(@horiz: @defaultHoriz, @vert: @defaultVert,
+			@blurRadius:@defaultBlurRadius, @spread:@defaultSpread,
+			@color: @defaultColor) {
+	-webkit-box-shadow: @horiz @vert @blurRadius @spread @defaultColor;
+	-moz-box-shadow: @horiz @vert @blurRadius @spread @defaultColor;
+	box-shadow: @horiz @vert @blurRadius @spread @defaultColor;
+}
