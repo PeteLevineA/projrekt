@@ -8,14 +8,45 @@
 	width: 100%;
 	font-size: 26px;
 }
+.dropDownInput {
+	background-color: rgba(0,0,0,0.4);
+}
 .dropDownItemList {
 	position:absolute;
-	top:34px;
 	left:5px;
 	background-color: #fff;
-	font-size:26px;
+	font-size:22px;
+	
 	.BoxShadow();
+}
+.dropDownItem {
+	padding: 4px 8px 8px 8px; 
 }
 .dropDownItem:hover {
 	background-color: #aaa;
+}
+.addButton {
+	float: right;
+	margin-left: 4px;
+	margin-right: 4px;
+}
+.addButtonLabel {
+	font-size: 22px;
+	color: #fff;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.projectList {
+	display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+.projectList .dropDownList {
+	width: 50%;
 }

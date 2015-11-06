@@ -4,7 +4,7 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var GradientText = require('./gradientText.jsx');
 var DropdownList = require('./dropdownList.jsx');
-
+var FullScreenImageBlur = require('./fullscreenImageBlur.jsx');
 var App = React.createClass({
     getInitialState: function() {
         return {
@@ -17,12 +17,14 @@ var App = React.createClass({
         }
     },
     render:function() {
-        return <div>
+        return <FullScreenImageBlur>
                 <div className="title">
                     <GradientText text="proj[rekt]" fontPixelSize={64} />
                 </div>
-                <DropdownList items={this.state.items} />
-            </div>;
+                <div className="projectList">
+                    <DropdownList items={this.state.items} />
+                </div>
+            </FullScreenImageBlur>;
     }
 });
 

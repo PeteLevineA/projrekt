@@ -68,9 +68,7 @@ var FullScreenImageBlur = React.createClass({
                 <div className="blurHoverPreview" onMouseEnter={this.previewHover} onMouseLeave={this.previewEnd}> 
                     <img src={this.state.image} title="blurImage" />
                 </div>
-                <div>
                 {this.props.children}
-                </div>
             </div>;
     }
 });
