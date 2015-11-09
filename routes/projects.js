@@ -9,6 +9,7 @@ router.get('/', function (req, res, next) {
             res.json(JSON.stringify(projects));
         }
         else {
+            res.status(err.status || 500);
             res.json({
                 'error': {
                     'message': err.message,
@@ -19,6 +20,7 @@ router.get('/', function (req, res, next) {
     });
     
 });
+// Add a new project via GET
 router.get('/add', function (req, res, next) {
     console.log(req.query.name + " " + req.query.title);
     var projectEntry = new Project({
@@ -36,6 +38,7 @@ router.get('/add', function (req, res, next) {
         }
         else
         {
+            res.status(err.status || 500);
             res.json({
                 'error': {
                     'message': err.message,
@@ -45,20 +48,44 @@ router.get('/add', function (req, res, next) {
         }
     });    
 });
-router.post('/addEntry/:name', function (req, res, next) {
-    //timeIn: { type: Date, default: Date.now },
-    //timeOut: Date,
-    //note: String,
-    //endOfDay: Boolean
-    var timeIn = req.body.timeIn;
-    var timeOut = req.body.timeOut;
+// Add a new project via POST
+router.post('/add', function (req, res, next) {
+    console.log(req.body.name + " " + req.body.title);
+    var projectEntry = new Project({
+        name: req.body.name,
+        title: req.body.title
+    });
+    projectEntry.save(function (err) {
+        if (!err)
+        {
+            res.json({
+                'response': {
+                    'message': 'Project Added. Name: ' + req.body.name
+                }
+            });
+        }
+        else
+        {
+            res.status(err.status || 500);
+            res.json({
+                'error': {
+                    'message': err.message,
+                    'error': err
+                }
+            });
+        }
+    });    
+});
+// Add a new entry for a project via POST by id
+router.post('/addEntry/:id', function (req, res, next) {
+    // date: { type: Date, required: true, default: Date.now },
+    // timeSpent: { type: Number, required: true },
+    // note: String   
+    var date = req.body.date;
+    var timeSpent = req.body.timeSpent;
     var note = req.body.note;
-    var endOfDay = false;
-    if (req.body.endOfDay && req.body.endOfDay.toLowerCase() === 'y')
-    {
-        endOfDay = true;
-    }
-    handleAddEntry(req.params.name, timeIn, timeOut, note, endOfDay, function (err) {
+    
+    handleAddEntryById(req.params.id, date, timeSpent, note, function (err) {
         if (!err) {
             res.json({
                 'response': {
@@ -67,6 +94,7 @@ router.post('/addEntry/:name', function (req, res, next) {
             });
         }
         else {
+            res.status(err.status || 500);
             res.json({
                 'error': {
                     'message': err.message,
@@ -76,15 +104,16 @@ router.post('/addEntry/:name', function (req, res, next) {
         }
     });
 });
-router.get('/addEntry/:name', function (req, res, next) {
-    var timeIn = req.query.timeIn;
-    var timeOut = req.query.timeOut;
+// Add a new entry for a project via GET by ID
+router.get('/addEntry/:id', function (req, res, next) {
+    // date: { type: Date, required: true, default: Date.now },
+    // timeSpent: { type: Number, required: true },
+    // note: String   
+    var date = req.query.date;
+    var timeSpent = req.query.timeSpent;
     var note = req.query.note;
-    var endOfDay = false;
-    if (req.query.endOfDay && req.query.endOfDay.toLowerCase() === 'y') {
-        endOfDay = true;
-    }
-    handleAddEntry(req.params.name, timeIn, timeOut, note, endOfDay, function (err) {
+    
+    handleAddEntryById(req.params.id, date, timeSpent, note, function (err) {
         if (!err) {
             res.json({
                 'response': {
@@ -93,6 +122,7 @@ router.get('/addEntry/:name', function (req, res, next) {
             });
         }
         else {
+            res.status(err.status || 500);
             res.json({
                 'error': {
                     'message': err.message,
@@ -102,14 +132,15 @@ router.get('/addEntry/:name', function (req, res, next) {
         }
     });
 });
-router.get('/entries/:name', function (req, res, next) {
+// GET: All entries by id
+router.get('/entries/:id', function (req, res, next) {
     var forDate = null;
-    if (req.query.forDate)
+    if (req.query.date)
     {
-        forDate = new Date(req.query.forDate);
+        forDate = new Date(req.query.date);
         console.log(forDate);
     }
-    getEntries(req.params.name, forDate, function (err, entries) {
+    getEntries(req.params.id, forDate, function (err, entries) {
         console.log(err);
         console.log(JSON.stringify(entries));
         if (!err) {
@@ -117,20 +148,21 @@ router.get('/entries/:name', function (req, res, next) {
         }
     });
 });
-
-var handleAddEntry = function (name, timeIn, timeOut, note, endOfDay, callback) {
-    console.log('name' + name);
-    Project.findOne({ name: name }).exec(function (err, project) {
+// Add a time entry for a date for the selected project
+var handleAddEntryById = function (id, date, timeSpent, note, callback) {
+    console.log('adding entry for id' + id);
+    Project.findOne({ '_id': id }).exec(function (err, project) {
         if (!err) {
-            project.entries.push({ timeIn: timeIn, timeOut: timeOut, note: note, endOfDay: endOfDay });
+            project.entries.push({ date: date, timeSpent: timeSpent, note: note });
             project.save(function (err) {
                 callback.call(project, err);
             });
         }
     });
 };
-var getEntries = function (name, forDate, callback) {
-    Project.findOne({ name: name }).exec(function (err, project) {
+// Get a list of entries for a project name and/or date
+var getEntries = function (id, forDate, callback) {
+    Project.findOne({ '_id': id }).exec(function (err, project) {
         if (err)
         {
             callback.call(this, err);
@@ -142,18 +174,16 @@ var getEntries = function (name, forDate, callback) {
             var year = forDate.getFullYear();
             var fullForDate = day + '/' + month + '/' + year;
 
-            for( var i = 0, len = project.entries.length; i < len; i++ )
-            {
-                console.log(JSON.stringify(project.entries[i]));
-                var searchDay = project.entries[i].timeIn.getDate();
-                var searchMonth = project.entries[i].timeIn.getMonth() + 1;
-                var searchYear = project.entries[i].timeIn.getFullYear();
-                var fullSearchDate = day + '/' + month + '/' + year;
+            project.entries.forEach(function(entry, i) {
+                var searchDay = entry.date.getDate();
+                var searchMonth = entry.date.getMonth() + 1;
+                var searchYear = entry.date.getFullYear();
+                var fullSearchDate = searchDay + '/' + searchMonth + '/' + searchYear;
                 if (fullForDate == fullSearchDate)
                 {
                     limitedEntries.push(project.entries[i]);
                 }
-            }
+            });
             callback.call(project, null, limitedEntries);
         }
         else

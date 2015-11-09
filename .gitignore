@@ -6,6 +6,7 @@ build/
 bin/
 data
 typings/
+.vscode/
 config
 *.log*
 .module-cache

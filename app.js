@@ -7,7 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var konfig = require('konfig')();
 
-var contractors = require('./routes/projects');
+var projects = require('./routes/projects');
+var index = require('./routes/index');
 
 var app = express();
 
@@ -31,6 +32,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/', index);
 app.use('/projects', projects);
 
 // catch 404 and forward to error handler
@@ -63,6 +65,5 @@ app.use(function(err, req, res, next) {
       'error': {}
   }});
 });
-
 
 module.exports = app;
