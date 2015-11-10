@@ -18,13 +18,22 @@ var DropDownItem = React.createClass({
 		};
 	},
 	handleClick: function(e) {
-		this.props.itemSelected.call(null, this.props.identifier);
+		var item = {
+			key: this.props.identifier,
+			value: this.props.value
+		};
+		this.props.itemSelected.call(null, item);
 		e.bubbles = false;
 		e.stopPropagation();
 		e.preventDefault();
 	},
 	handleAddItem: function(e) {
-		this.props.addItemClicked.call(null, this.props.identifier);
+		var item = {
+			key: this.props.identifier,
+			value: this.props.value
+		};
+			
+		this.props.addItemClicked.call(null, item);
 		e.stopPropagation();
 	},
 	render: function() {

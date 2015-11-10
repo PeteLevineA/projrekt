@@ -6,7 +6,8 @@ var TextField = require("material-ui/lib/text-field");
 
 var DropDownList = React.createClass({
 	propTypes: {
-		items: React.PropTypes.array
+		items: React.PropTypes.array,
+		handleProjectSelected: React.PropTypes.func
 	},
 	getDefaultProps: function() {
 		return {
@@ -21,6 +22,11 @@ var DropDownList = React.createClass({
 			items: this.props.items,
 			itemsVisible: false
 		}	
+	},
+	componentWillReceiveProps: function(nextProps) {
+		this.setState({
+			items: nextProps.items
+		});
 	},
 	handleChange:function(e) {
 		var value = e.target.value;
@@ -52,20 +58,24 @@ var DropDownList = React.createClass({
 		});
 	},
 	itemSelected: function(item) {
-	
+		this.setState({
+			itemsVisible: false
+		});
+		if( this.props.handleProjectSelected ) {
+			this.props.handleProjectSelected.call(null, item);
+		}
 	},
 	render: function(){
 		var self = this;
 		var itemsListClass = "dropDownItemList";
 		var addItem = false;
 		if( !this.state.itemsVisible ) {
-			itemsListClass += " hidden";
-		}
+			itemsListClass += " opaque";
+		}		
 		return <div className="dropDownList">
 				<div className="dropDownInput">
 					<TextField floatingLabelText="enter project name..."
 					onChange={this.handleChange}
-					onBlur={this.handleBlur}
 					onFocus={this.handleFocus}
 					fullWidth={true}
 					inputStyle={{

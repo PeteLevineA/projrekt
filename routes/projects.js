@@ -6,7 +6,7 @@ var Project = require('../models/projectSchema');
 router.get('/', function (req, res, next) {
     Project.find({}).sort({ date: -1 }).exec(function (err, projects) {
         if (!err) {
-            res.json(JSON.stringify(projects));
+            res.json(projects);
         }
         else {
             res.status(err.status || 500);

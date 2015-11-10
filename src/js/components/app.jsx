@@ -5,26 +5,68 @@ var ReactDOM = require("react-dom");
 var GradientText = require('./gradientText.jsx');
 var DropdownList = require('./dropdownList.jsx');
 var FullScreenImageBlur = require('./fullscreenImageBlur.jsx');
+var DataLoader = require('../lib/dataLoader.js');
+var JsonResultsParser = require('../lib/jsonResultParser.js');
+var ProjectApiParser = require('../lib/projectApiParser.js');
+var config = require('../../../config/config.json');
+
 var App = React.createClass({
     getInitialState: function() {
         return {
             items: [
-                { key: "test1", value: "This is a test" },
-                { key: "test2", value: "super awesome item" },
-                { key: "test3", value: "lorem ipsum item" },
-                { key: "test4", value: "testing some more items" }
-            ]
+                { key: "loading", value: "loading projects..." }
+            ],
+            projectListVisible: true,
+            projectTitleVisible: false
         }
     },
-    render:function() {
+    componentDidMount: function() {
+        this.loadProjects();
+    },
+    projectItemSelected: function(item) {
+        console.log(item);
+        this.setState({
+			projectListVisible: false,
+            projectTitleVisible: true,
+            projectTitle: item.value
+		});
+    },
+    render:function() {    
+		var projectListClass = "projectList verticalCenter";
+        var projectTitleClass = "projectTitle";
+        if( !this.state.projectListVisible ) {
+			projectListClass += " opaque";
+		}
+        if( !this.state.projectTitleVisible ) {
+            projectTitleClass += " opaque"; 
+        }
         return <FullScreenImageBlur>
                 <div className="title">
                     <GradientText text="proj[rekt]" fontPixelSize={64} />
                 </div>
-                <div className="projectList">
-                    <DropdownList items={this.state.items} />
+                <div className={projectListClass}>
+                    <DropdownList items={this.state.items} handleProjectSelected={this.projectItemSelected} />
+                </div>
+                <div className={projectTitleClass}>
+                    <GradientText text={this.state.projectTitle} fontPixelSize={72} />
                 </div>
             </FullScreenImageBlur>;
+    },
+    loadProjects: function() {        
+        var projects = new DataLoader();
+        var self = this;
+        projects.load(function(projectData) {
+            var projectItems = projectData.map(function(project) {
+                var proj = {
+                    key: project.id,
+                    value: project.name
+                };
+                return proj;
+            });
+            self.setState({
+                items: projectItems
+            });
+        }, config.urls.projectsUrl, null, ProjectApiParser);
     }
 });
 

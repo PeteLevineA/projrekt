@@ -1,5 +1,6 @@
 @import "constants.less";
 @import "boxShadow.less";
+@import "transitionAll.less";
 
 .dropDownList {
 	position: relative;
@@ -38,15 +39,50 @@
 }
 
 .projectList {
+	height: 100%;
 	display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
+	.TransitionAll();
+}
+.projectList.verticalCenter {
 	align-items: center;
+	-webkit-align-items: center;
 	justify-content: center;
-	height: 100%;
+	-webkit-justify-content: center;
+}
+.projectList.topRight {
+	align-items: flex-start;
+	-webkit-align-items: flex-start;
+	justify-content: flex-end;
+	-webkit-justify-content: flex-end;
+	margin-right: @padding;
 }
 .projectList .dropDownList {
 	width: 50%;
+	.TransitionAll();
+}
+.projectList.verticalCenter .dropDownList {
+	width: 50%;
+}
+.projectList.topCenter .dropDownList {
+	width: 35%;
+}
+
+.projectTitle {
+	position: absolute;
+	top: @padding;
+	text-align: center;
+	width: 100%;
+	.TransitionAll();
+}
+.projectTitle svg {
+	
+	margin: 0 auto;
+}
+.projectTitle.hidden {
+	top: 50%;
+	margin-top: -36px;
 }
