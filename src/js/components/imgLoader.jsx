@@ -39,6 +39,7 @@ var ImgLoader = React.createClass({
 				self.setState({
 					image: self.props.defaultImageUrl
 				});
+				self.props.OnImageRetrieved.call(this, self.props.defaultImageUrl);
 			});
 	},
 	render: function() {

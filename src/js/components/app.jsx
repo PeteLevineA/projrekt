@@ -55,17 +55,19 @@ var App = React.createClass({
     loadProjects: function() {        
         var projects = new DataLoader();
         var self = this;
-        projects.load(function(projectData) {
-            var projectItems = projectData.map(function(project) {
-                var proj = {
-                    key: project.id,
-                    value: project.name
-                };
-                return proj;
-            });
-            self.setState({
-                items: projectItems
-            });
+        projects.load(function(projectData, error) {
+            if( !error ) {
+                var projectItems = projectData.map(function(project) {
+                    var proj = {
+                        key: project.id,
+                        value: project.name
+                    };
+                    return proj;
+                });
+                self.setState({
+                    items: projectItems
+                });
+            }
         }, config.urls.projectsUrl, null, ProjectApiParser);
     }
 });
