@@ -99,3 +99,5 @@ var CircleTimer = React.createClass({
             </div>;
     }
 });
+
+module.exports = CircleTimer;

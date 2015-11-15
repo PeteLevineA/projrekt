@@ -9,6 +9,9 @@ var DataLoader = require('../lib/dataLoader.js');
 var JsonResultsParser = require('../lib/jsonResultParser.js');
 var ProjectApiParser = require('../lib/projectApiParser.js');
 var config = require('../../../config/config.json');
+var Router = require('react-router');
+var Route = Router.Route;
+var Link = Router.Link;
 
 var App = React.createClass({
     getInitialState: function() {
@@ -35,7 +38,7 @@ var App = React.createClass({
 		var projectListClass = "projectList verticalCenter";
         var projectTitleClass = "projectTitle";
         if( !this.state.projectListVisible ) {
-			projectListClass += " opaque";
+			projectListClass += " reverse";
 		}
         if( !this.state.projectTitleVisible ) {
             projectTitleClass += " opaque"; 
@@ -47,9 +50,7 @@ var App = React.createClass({
                 <div className={projectListClass}>
                     <DropdownList items={this.state.items} handleProjectSelected={this.projectItemSelected} />
                 </div>
-                <div className={projectTitleClass}>
-                    <GradientText text={this.state.projectTitle} fontPixelSize={72} />
-                </div>
+                <RouteHandler />
             </FullScreenImageBlur>;
     },
     loadProjects: function() {        
