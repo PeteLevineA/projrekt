@@ -6,7 +6,10 @@ var ProjectDetails = require('./projectDetails.jsx');
 
 var ProjectHandler = React.createClass({
 	render: function() {
-		
+		return <div>
+			<ProjectMenu project={this.props.project} />
+			<ProjectDetails project={this.props.project} />
+			</div>;
 	}
 });
 
