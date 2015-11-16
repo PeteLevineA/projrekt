@@ -1,0 +1,24 @@
+@import "constants.less";
+@import "boxShadow.less";
+@import "transitionAll.less";
+@import "bounceIn.less";
+@import "bounceOut.less";
+
+.projectMenu-enter {
+	opacity: 0.1;
+	.TransitionAll(1s);
+}
+.projectMenu-enter.projectMenu-enter.active {
+	.BounceIn();
+}
+
+.projectMenu-leave {
+	opacity: 1;
+}
+.projectMenu-leave.projectMenu-leave-active {
+	.BounceOut();
+}
+
+.projectMenu {
+	
+}

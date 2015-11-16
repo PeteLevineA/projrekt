@@ -8,10 +8,11 @@ var FullScreenImageBlur = require('./fullscreenImageBlur.jsx');
 var DataLoader = require('../lib/dataLoader.js');
 var JsonResultsParser = require('../lib/jsonResultParser.js');
 var ProjectApiParser = require('../lib/projectApiParser.js');
+var ProjectHandler = require('./projectHandler.jsx');
 var config = require('../../../config/config.json');
-var Router = require('react-router');
-var Route = Router.Route;
-var Link = Router.Link;
+var ReactRouter = require('react-router');
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
 
 var App = React.createClass({
     getInitialState: function() {
@@ -50,7 +51,7 @@ var App = React.createClass({
                 <div className={projectListClass}>
                     <DropdownList items={this.state.items} handleProjectSelected={this.projectItemSelected} />
                 </div>
-                <RouteHandler />
+                {this.props.children}
             </FullScreenImageBlur>;
     },
     loadProjects: function() {        
@@ -74,7 +75,12 @@ var App = React.createClass({
 });
 
 function render() {    
-    ReactDOM.render(<App />, document.getElementById('app'));
+    ReactDOM.render(
+        <Router>
+            <Route path="/" component={App}>
+                <Route path="project" component={ProjectHandler} />
+            </Route>
+        </Router>, document.getElementById('app'));
 }
 
 render();
