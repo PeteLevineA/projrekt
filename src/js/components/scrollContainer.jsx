@@ -41,6 +41,13 @@ var ScrollContainer = React.createClass({
 		var elemHeight = elem.offsetHeight;
 		var elemBot = elemTop + elemHeight;
 		var viewportBot = (this.scrollY + this.viewportHeight) - this.props.viewOffset;
+		if( elemTop < viewportBot && elemBot > this.scrollY ) {
+			// TODO: Scrolled into view active
+		}
+		else {
+			// TODO: Scrolled into view inactive
+		}
+		this.scrollReady = false;
 	}
 });
 
