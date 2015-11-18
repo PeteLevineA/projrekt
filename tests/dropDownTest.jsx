@@ -20,7 +20,7 @@ describe('Dropdown Components', function() {
 	beforeEach(function() {
 		this.testItems = TEST_ITEMS;
 		this.item = TestUtils.renderIntoDocument(
-			<DropDownList items={this.testItems} />
+			<DropdownList items={this.testItems} />
 		);
 		this.items = TestUtils.scryRenderedComponentsWithType(this.item, DropdownItem);
 		
@@ -29,8 +29,10 @@ describe('Dropdown Components', function() {
 		expect(items.length).to.equal(TEST_ITEMS.length);
 	});
 	it('should limit items when typed', function() {
-		TestUtils.Simulate.change(ReactDOM.findDOMNode(this.item, 
-				{target: { value: "test" } });
-		
+		var node = this.refs.input;
+		node.value = 'test'
+		TestUtils.Simulate.change(node);
+		this.items = TestUtils.scryRenderedComponentsWithType(this.item, DropdownItem);
+		expect(items.length).to.equal(1);
 	}); 
 });
