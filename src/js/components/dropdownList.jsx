@@ -7,7 +7,8 @@ var TextField = require("material-ui/lib/text-field");
 var DropDownList = React.createClass({
 	propTypes: {
 		items: React.PropTypes.array,
-		handleProjectSelected: React.PropTypes.func
+		handleProjectSelected: React.PropTypes.func,
+		handleAddItem: React.PropTypes.func
 	},
 	getDefaultProps: function() {
 		return {
@@ -67,6 +68,14 @@ var DropDownList = React.createClass({
 			this.props.handleProjectSelected.call(null, item);
 		}
 	},
+	handleAddItem: function(item) {
+		this.setState({
+			itemsVisible: false
+		});
+		if( this.props.handleAddItem ) {
+			this.props.handleAddItem.call(null, item);
+		}
+	},
 	render: function(){
 		var self = this;
 		var itemsListClass = "dropDownItemList";
@@ -100,7 +109,8 @@ var DropDownList = React.createClass({
 					return <DropdownItem itemSelected={self.itemSelected} 
 							key={item.key} identifier={item.key} 
 							value={item.value} typedValue={self.state.typedValue}
-							addItem={addItem}>
+							addItem={addItem}
+							addItemClicked={this.handleAddItem}>
 						</DropdownItem>;
 				})}
 				</div>

@@ -1,0 +1,38 @@
+@import "bounceIn.less";
+@import "bounceOut.less";
+
+circle {
+	@media screen {
+		@media(min-width: 768px) {
+			height: 110%;
+			width: 110%;
+		}
+		@media(min-width: 1280px) {
+			height: 120%;
+			width: 120%;
+		}
+		@media(min-width: 1920px ) {
+			height: 130%;
+			width: 130%;
+		}
+	}
+}
+
+.circleTimer {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+	align-items: center;
+	-webkit-align-items: center;
+	justify-content: center;
+	-webkit-justify-content: center;
+	.BounceIn();
+	.BounceOut();
+	.TransitionAll();
+}
