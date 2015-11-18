@@ -8,7 +8,11 @@ var FullScreenImageBlur = require('./fullscreenImageBlur.jsx');
 var DataLoader = require('../lib/dataLoader.js');
 var JsonResultsParser = require('../lib/jsonResultParser.js');
 var ProjectApiParser = require('../lib/projectApiParser.js');
+var ProjectHandler = require('./projectHandler.jsx');
 var config = require('../../../config/config.json');
+var ReactRouter = require('react-router');
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
 
 var App = React.createClass({
     getInitialState: function() {
@@ -35,7 +39,7 @@ var App = React.createClass({
 		var projectListClass = "projectList verticalCenter";
         var projectTitleClass = "projectTitle";
         if( !this.state.projectListVisible ) {
-			projectListClass += " opaque";
+			projectListClass += " reverse";
 		}
         if( !this.state.projectTitleVisible ) {
             projectTitleClass += " opaque"; 
@@ -47,31 +51,36 @@ var App = React.createClass({
                 <div className={projectListClass}>
                     <DropdownList items={this.state.items} handleProjectSelected={this.projectItemSelected} />
                 </div>
-                <div className={projectTitleClass}>
-                    <GradientText text={this.state.projectTitle} fontPixelSize={72} />
-                </div>
+                {this.props.children}
             </FullScreenImageBlur>;
     },
     loadProjects: function() {        
         var projects = new DataLoader();
         var self = this;
-        projects.load(function(projectData) {
-            var projectItems = projectData.map(function(project) {
-                var proj = {
-                    key: project.id,
-                    value: project.name
-                };
-                return proj;
-            });
-            self.setState({
-                items: projectItems
-            });
+        projects.load(function(projectData, error) {
+            if( !error ) {
+                var projectItems = projectData.map(function(project) {
+                    var proj = {
+                        key: project.id,
+                        value: project.name
+                    };
+                    return proj;
+                });
+                self.setState({
+                    items: projectItems
+                });
+            }
         }, config.urls.projectsUrl, null, ProjectApiParser);
     }
 });
 
 function render() {    
-    ReactDOM.render(<App />, document.getElementById('app'));
+    ReactDOM.render(
+        <Router>
+            <Route path="/" component={App}>
+                <Route path="project" component={ProjectHandler} />
+            </Route>
+        </Router>, document.getElementById('app'));
 }
 
 render();

@@ -28,6 +28,7 @@ DataLoader.prototype.load = function(dataLoadedCallback, apiUrl, secondaryApiUrl
 		})
 		.catch(function(response) {
 			console.log(response);
+			dataLoadedCallback.call(null, null, response);
 		});
 };
 

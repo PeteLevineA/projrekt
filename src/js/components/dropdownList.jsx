@@ -36,9 +36,11 @@ var DropDownList = React.createClass({
 		this.searchForValues(value);
 	},
 	handleBlur: function(e) {
-		this.setState({
-			itemsVisible: false
-		});
+		if( this.isMounted() ) {
+			this.setState({
+				itemsVisible: false
+			});
+		}
 	},
 	handleFocus: function(e) {
 		this.setState({
