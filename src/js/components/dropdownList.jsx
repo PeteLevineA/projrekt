@@ -1,7 +1,7 @@
 "use strict";
 
 var React = require('react');
-var DropDownItem = require('./dropDownItem.jsx');
+var DropdownItem = require('./dropdownItem.jsx');
 var TextField = require("material-ui/lib/text-field");
 
 var DropDownList = React.createClass({
@@ -95,11 +95,11 @@ var DropDownList = React.createClass({
 					else {
 						addItem = false;
 					}
-					return <DropDownItem itemSelected={self.itemSelected} 
+					return <DropdownItem itemSelected={self.itemSelected} 
 							key={item.key} identifier={item.key} 
 							value={item.value} typedValue={self.state.typedValue}
 							addItem={addItem}>
-						</DropDownItem>;
+						</DropdownItem>;
 				})}
 				</div>
 			</div>;
