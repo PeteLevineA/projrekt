@@ -3,34 +3,38 @@
 var React = require('react');
 
 var CircleTimer = React.createClass({
+    propTypes: {
+        radius: React.PropTypes.number,
+        percentage: React.PropTypes.number,
+        strokeWidth: React.PropTypes.number,
+        interval: React.PropTypes.number,
+        showShadow: React.PropTypes.bool
+    }
     getDefaultProps: function() {
         return {
-            r: 100,
+            radius: 100,
             percentage: 0,
             strokeWidth: 6,
             interval: 200,
-            timeRequiredInMs: 8 * 60 * 60 * 1000,
             showShadow: false
         };
     },
     getInitialState: function() {
         return {
-            r: this.props.r, 
+            r: this.props.radius, 
             percentage: this.props.percentage
         };
     },
     componentDidMount: function() {
-        // Update the Circle Timer Every prop.interval amount
-        this.timer = setInterval(this.timerTick, this.props.interval);
         this.elapsedTime = 0;
-        this.timeStarted = new Date();
     },
     componentWillUnmount: function() {
         clearInterval(this.timer);
     },
     timerTick: function() {
         this.elapsedTime = (new Date()) - this.timeStarted;
-        var percentage = ( this.elapsedTime / this.props.timeRequiredInMs ) * 100;
+        var hourMs = 60 * 60 * 1000;
+        var percentage = ( this.elapsedTime / hourMs ) * 100;
         this.setState({
             r: this.state.r,
             percentage: percentage
@@ -53,7 +57,6 @@ var CircleTimer = React.createClass({
         var viewBox = "0 0 " + widthViewPort + " " + heightViewPort;
         var dashArray = 2 * Math.PI * this.state.r;
         var dashOffset =  ( ( 100 - this.state.percentage ) / 100 ) * dashArray;
-        var hoursRemaining = Math.floor((this.props.timeRequiredInMs - this.elapsedTime) / 1000 / 60 / 60);
         return <div className="circleTimer" style={{
                 width: width,
                 height: height

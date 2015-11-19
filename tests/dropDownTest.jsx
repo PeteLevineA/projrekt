@@ -2,6 +2,7 @@
 
 var DropdownList = require('../src/js/components/dropdownList.jsx');
 var DropdownItem = require('../src/js/components/dropdownItem.jsx');
+var TextField = require('material-ui/lib/text-field');
 var chai = require('chai');
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -20,17 +21,20 @@ describe('Dropdown Components', function() {
 	beforeEach(function() {
 		this.testItems = TEST_ITEMS;
 		this.item = TestUtils.renderIntoDocument(
-			<DropDownList items={this.testItems} />
+			<DropdownList items={this.testItems} />
 		);
-		this.items = TestUtils.scryRenderedComponentsWithType(this.item, DropdownItem);
-		
 	});
-	it('should contain all items', function() {
-		expect(items.length).to.equal(TEST_ITEMS.length);
+	it('drop down should have all items', function() {
+		var items = TestUtils.scryRenderedComponentsWithType(this.item, DropdownItem);
+		expect(items.length).to.equal(this.testItems.length);
 	});
 	it('should limit items when typed', function() {
-		TestUtils.Simulate.change(ReactDOM.findDOMNode(this.item, 
-				{target: { value: "test" } });
-		
+		var textField = TestUtils.scryRenderedComponentsWithType(this.item, TextField);
+		var node = textField[0].refs.input;
+		node.value = 'test';
+		TestUtils.Simulate.change(node);
+		var items = TestUtils.scryRenderedComponentsWithType(this.item, DropdownItem);
+		// this will be 2 since anything typed will also have an add item.
+		expect(items.length).to.equal(2);
 	}); 
 });

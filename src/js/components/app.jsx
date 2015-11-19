@@ -11,6 +11,7 @@ var ProjectApiParser = require('../lib/projectApiParser.js');
 var ProjectHandler = require('./projectHandler.jsx');
 var config = require('../../../config/config.json');
 var ReactRouter = require('react-router');
+var createBrowserHistory = require('history/lib/createBrowserHistory');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 
@@ -28,12 +29,17 @@ var App = React.createClass({
         this.loadProjects();
     },
     projectItemSelected: function(item) {
-        console.log(item);
-        this.setState({
-			projectListVisible: false,
-            projectTitleVisible: true,
-            projectTitle: item.value
-		});
+        if( item.key !== 'add' ) {
+            createBrowserHistory.push('/project', { id: item.key });
+            this.setState({
+                projectListVisible: false,
+                projectTitleVisible: true,
+                projectTitle: item.value
+            });
+        }
+    },
+    addProjectClicked: function(item) {
+        this.addProject(item);
     },
     render:function() {    
 		var projectListClass = "projectList verticalCenter";
@@ -49,7 +55,9 @@ var App = React.createClass({
                     <GradientText text="proj[rekt]" fontPixelSize={64} />
                 </div>
                 <div className={projectListClass}>
-                    <DropdownList items={this.state.items} handleProjectSelected={this.projectItemSelected} />
+                    <DropdownList items={this.state.items} 
+                        handleProjectSelected={this.projectItemSelected}
+                         />
                 </div>
                 {this.props.children}
             </FullScreenImageBlur>;
@@ -71,14 +79,28 @@ var App = React.createClass({
                 });
             }
         }, config.urls.projectsUrl, null, ProjectApiParser);
+    },
+    addProject: function(item) {
+        var project = new DataLoader();
+        var self = this;
+        project.load(function(projectData, error) {
+            if( !error ) {
+                createBrowserHistory.push('/project', { id: item.key });
+                this.setState({
+                    projectListVisible: false,
+                    projectTitleVisible: true,
+                    projectTitle: item.value
+                });
+            }
+        }, config.urls.addProjectUrl + '/' + item.value, null, ProjectApiParser);
     }
 });
 
 function render() {    
     ReactDOM.render(
-        <Router>
+        <Router history={createBrowserHistory()}>
             <Route path="/" component={App}>
-                <Route path="project" component={ProjectHandler} />
+                <Route path="project/:id" component={ProjectHandler} />
             </Route>
         </Router>, document.getElementById('app'));
 }
