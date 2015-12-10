@@ -9,7 +9,8 @@ var CircleTimer = React.createClass({
         percentage: React.PropTypes.number,
         strokeWidth: React.PropTypes.number,
         interval: React.PropTypes.number,
-        timerLengthInSeconds: React.PropTypes.number
+        timerLengthInSeconds: React.PropTypes.number,
+        timerStarted: React.PropTypes.bool
     },
     getDefaultProps: function() {
         return {
@@ -28,7 +29,9 @@ var CircleTimer = React.createClass({
     },
     componentDidMount: function() {
         this.elapsedTime = 0;
-        this.restartTimer();
+        if( this.props.timerStarted ) {
+            this.restartTimer();
+        }
     },
     componentWillUnmount: function() {
         clearInterval(this.timer);
@@ -41,6 +44,14 @@ var CircleTimer = React.createClass({
             r: this.state.r,
             percentage: percentage
         });
+    },
+    componentWillReceiveProps: function(nextProps) {
+        if(nextProps.timerStarted) {
+            this.restartTimer();
+        }
+        else if(!nextProps.timerStarted) {
+            this.pauseTimer();
+        }
     },
     pauseTimer: function() {
         clearInterval(this.timer);

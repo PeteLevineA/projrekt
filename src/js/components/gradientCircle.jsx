@@ -31,7 +31,7 @@ var GradientCircle = React.createClass({
         var dashOffset =  ( ( 100 - this.props.percentage ) / 100 ) * dashArray;
 		var intervalSeconds = this.props.interval / 1000;
 		var transitionCss = 'stroke-dashoffset ' + intervalSeconds + 's linear';
-		return <div className="circleTimers" style={{
+		return <div className="gradientCircle" style={{
                 width: width,
                 height: height
                 }}>

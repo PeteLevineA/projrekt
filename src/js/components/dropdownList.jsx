@@ -61,17 +61,13 @@ var DropDownList = React.createClass({
 		});
 	},
 	itemSelected: function(item) {
-		this.setState({
-			itemsVisible: false
-		});
+		
 		if( this.props.handleProjectSelected ) {
 			this.props.handleProjectSelected.call(null, item);
 		}
 	},
 	handleAddItem: function(item) {
-		this.setState({
-			itemsVisible: false
-		});
+		
 		if( this.props.handleAddItem ) {
 			this.props.handleAddItem.call(null, item);
 		}

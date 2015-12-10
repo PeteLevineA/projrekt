@@ -20,6 +20,24 @@ router.get('/', function (req, res, next) {
     });
     
 });
+/* GET project by id. */
+router.get('/:id', function (req, res, next) {
+    Project.findOne({ '_id': req.params.id }).sort({ date: -1 }).exec(function (err, projects) {
+        if (!err) {
+            res.json(projects);
+        }
+        else {
+            res.status(err.status || 500);
+            res.json({
+                'error': {
+                    'message': err.message,
+                    'error': err
+                }
+            });
+        }
+    });
+    
+});
 // Add a new project via GET
 router.get('/add', function (req, res, next) {
     console.log(req.query.name + " " + req.query.title);
