@@ -3,24 +3,29 @@
 var React = require("react");
 var ImgLoader = require('./imgLoader.jsx');
 var ResponsiveImage = require('./responsiveImage.jsx');
-var config = require('../../../config/config.json');
-var NasaImageApiParser = require('../lib/nasaImageApiParser.js');
 
 var FullScreenImageBlur = React.createClass({
+    propTypes: {
+        imageUrl: React.PropTypes.string
+    },
     getDefaultProps: function() {
         return {
             containerFullSizeOfImage: false,
-            thumbnailWidth: 100
+            thumbnailWidth: 100,
+            
         };
     },
     getInitialState: function() {
         return {
             displayOverlay: false, 
-            image: '',
+            image: this.props.imageUrl,
             previewImage: false
         };
     },
     componentDidMount: function() {
+        this.setState({
+            displayOverlay: true
+        })
     },
     componentWillUnmount: function() {
         
@@ -45,25 +50,22 @@ var FullScreenImageBlur = React.createClass({
         var overlayCssClasses = "animatedFadeIn";
         var blurCssClasses = "blur";
         var colorCssClasses = "blurColorOverlay";
-        var patterCssClasses = "patternOverlay";
+        var patternCssClasses = "patternOverlay";
         if( !this.state.displayOverlay ) {
             overlayCssClasses += " hidden";
         }
         if( this.state.previewImage ) {
             blurCssClasses += " transparent";
             colorCssClasses += " transparent";
-            patterCssClasses += " transparent";
+            patternCssClasses += " transparent";
         }
         return <div className="fullScreenPicBlur">
-                <ImgLoader imageUrl={config.urls.imageApiUrl}
-                    defaultImageUrl={config.urls.defaultImageUrl}
-                    OnImageRetrieved={this.imageRetrieved}
-                    imageDataParser={NasaImageApiParser} />
+                <ResponsiveImage cssClasses="fastFadeIn" imageUrl={this.state.image} />
                 <div className={overlayCssClasses}>
                     <ResponsiveImage cssClasses={blurCssClasses} imageUrl={this.state.image}>
                     </ResponsiveImage>
                     <div className={colorCssClasses}></div>
-                    <div className={patterCssClasses}></div>
+                    <div className={patternCssClasses}></div>
                 </div>
                 <div className="blurHoverPreview" onMouseEnter={this.previewHover} onMouseLeave={this.previewEnd}> 
                     <img src={this.state.image} title="blurImage" />

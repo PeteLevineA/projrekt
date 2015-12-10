@@ -12,7 +12,7 @@ var path = require('path');
 var less = require('gulp-less');
 
 var config = {
-    port: 9005,
+    port: 3000,
     devBaseUrl: 'http://localhost',
     paths: {
         html: './views/*.html',
@@ -35,7 +35,7 @@ var config = {
 // Start a local dev server
 gulp.task('connect', function () {
     nodemon({
-        script: 'app.js',
+        script: './bin/www',
         ext: 'js html',
         env: { "PORT": '3000' }
     });
@@ -100,4 +100,4 @@ gulp.task('watchjs', function() {
 });
 
 // Default
-gulp.task('default', ['html', 'js', 'less', 'lint', 'watch', 'watchjs', 'watchjsx', 'watchcss']);
+gulp.task('default', ['html', 'js', 'less', 'lint', 'watch', 'watchjs', 'watchjsx', 'watchcss', 'open']);

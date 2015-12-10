@@ -1,6 +1,7 @@
 "use strict";
 
 var React = require('react');
+var GradientCircle = require('./gradientCircle.jsx');
 
 var CircleTimer = React.createClass({
     propTypes: {
@@ -8,15 +9,15 @@ var CircleTimer = React.createClass({
         percentage: React.PropTypes.number,
         strokeWidth: React.PropTypes.number,
         interval: React.PropTypes.number,
-        showShadow: React.PropTypes.bool
-    }
+        timerLengthInSeconds: React.PropTypes.number
+    },
     getDefaultProps: function() {
         return {
             radius: 100,
             percentage: 0,
             strokeWidth: 6,
             interval: 200,
-            showShadow: false
+            timerLengthInSeconds: 60*60
         };
     },
     getInitialState: function() {
@@ -27,14 +28,15 @@ var CircleTimer = React.createClass({
     },
     componentDidMount: function() {
         this.elapsedTime = 0;
+        this.restartTimer();
     },
     componentWillUnmount: function() {
         clearInterval(this.timer);
     },
     timerTick: function() {
         this.elapsedTime = (new Date()) - this.timeStarted;
-        var hourMs = 60 * 60 * 1000;
-        var percentage = ( this.elapsedTime / hourMs ) * 100;
+        var timerMs = this.props.timerLengthInSeconds * 1000
+        var percentage = ( this.elapsedTime / timerMs ) * 100;
         this.setState({
             r: this.state.r,
             percentage: percentage
@@ -48,58 +50,7 @@ var CircleTimer = React.createClass({
         this.timeStarted = new Date();
     },
     render: function () {
-        var width = this.state.r * 2;
-        var height = this.state.r * 2;
-        var cX = this.state.r + ( this.props.strokeWidth / 2 );
-        var cY = this.state.r + ( this.props.strokeWidth / 2 );
-        var widthViewPort = width + this.props.strokeWidth;
-        var heightViewPort = height + this.props.strokeWidth;
-        var viewBox = "0 0 " + widthViewPort + " " + heightViewPort;
-        var dashArray = 2 * Math.PI * this.state.r;
-        var dashOffset =  ( ( 100 - this.state.percentage ) / 100 ) * dashArray;
-        return <div className="circleTimer" style={{
-                width: width,
-                height: height
-                }}>
-                <div id="circleShadow"
-                    style={{
-                        width: width + this.props.strokeWidth,
-                        height: height + this.props.strokeWidth,
-                        display: this.props.showShadow ? "block" : "none"
-                    }}>
-                </div>
-                <div id="circleInset"
-                    style={{
-                        width: width - this.props.strokeWidth,
-                        height: height - this.props.strokeWidth,
-                        left: this.props.strokeWidth,
-                        top: this.props.strokeWidth,
-                        display: this.props.showShadow ? "block" : "none"
-                    }}>
-                </div>
-                <svg id="circleSvg" width={widthViewPort} height={heightViewPort} viewPort={viewBox} version="1.1" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="circleTimeGradient" y1="0" y2="1">
-                            <stop stopColor="#C47FCF" offset="0"/>
-                            <stop stopColor="#837CCF" offset=".5"/>
-                            <stop stopColor="#1E69E5" offset="1"/>
-                        </linearGradient>
-                    </defs>
-                    <circle 
-                        r={this.state.r} 
-                        cx={cX} 
-                        cy={cY} 
-                        fill="transparent" 
-                        transform={"rotate(90,"+cX+","+cY+")"}
-                        stroke="url(#circleTimeGradient)"
-                        strokeWidth={this.props.strokeWidth + "px"}
-                        style={{
-                            strokeDasharray: dashArray,
-                            strokeDashoffset: dashOffset
-                        }} />                    
-                      
-                </svg>
-            </div>;
+        return <GradientCircle percentage={this.state.percentage} />;
     }
 });
 

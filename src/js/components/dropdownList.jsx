@@ -110,7 +110,7 @@ var DropDownList = React.createClass({
 							key={item.key} identifier={item.key} 
 							value={item.value} typedValue={self.state.typedValue}
 							addItem={addItem}
-							addItemClicked={this.handleAddItem}>
+							addItemClicked={self.handleAddItem}>
 						</DropdownItem>;
 				})}
 				</div>

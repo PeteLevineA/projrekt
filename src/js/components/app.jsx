@@ -12,6 +12,7 @@ var ProjectHandler = require('./projectHandler.jsx');
 var config = require('../../../config/config.json');
 var ReactRouter = require('react-router');
 var createBrowserHistory = require('history/lib/createBrowserHistory');
+var CircleTimer = require('./circleTimer.jsx');
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 
@@ -50,9 +51,12 @@ var App = React.createClass({
         if( !this.state.projectTitleVisible ) {
             projectTitleClass += " opaque"; 
         }
-        return <FullScreenImageBlur>
+        return <FullScreenImageBlur imageUrl={config.urls.unsplashUrl}>
                 <div className="title">
                     <GradientText text="proj[rekt]" fontPixelSize={64} />
+                </div>
+                <div className="timer">
+                    <CircleTimer timerLengthInSeconds={30} />
                 </div>
                 <div className={projectListClass}>
                     <DropdownList items={this.state.items} 
