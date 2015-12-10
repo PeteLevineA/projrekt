@@ -67,6 +67,7 @@ var GradientCircle = React.createClass({
 							transform={"rotate(90,"+cX+","+cY+")"}
 							stroke="url(#circleTimeGradient)"
 							strokeWidth={this.props.strokeWidth + "px"}
+							strokeLinecap="round"
 							style={{
 								strokeDasharray: dashArray,
 								strokeDashoffset: dashOffset,
