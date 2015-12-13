@@ -31,7 +31,7 @@ Project.prototype.getDays = function() {
 	var curDay;
 	var sortedEntries = this.entries.sort(sortDays);
 	var dayList = new Array();
-	this.sortedEntries.forEach(function(entry, index) {
+	sortedEntries.forEach(function(entry, index) {
 		if(!curDay) {
 			curDay = new Date(entry.date.getFullYear(), 
 						entry.date.getMonth()+1, entry.date.getDate());
@@ -65,12 +65,14 @@ Project.prototype.getDays = function() {
 	return dayList;
 };
 
-project.prototype.barChartData = function() {
+Project.prototype.barChartData = function() {
 	var dayList = this.getDays();
 	if(dayList.length < 7) {
 		return dayChartData(dayList);
 	}
-	
+	else if(dayList.length >=7) {
+		lastXDayChartData(dayList, 7);
+	}
 };
 
 function dayChartData(dayList) {
@@ -95,6 +97,14 @@ function dayChartData(dayList) {
 		datasets: datasets
 	};
 	return data;
+}
+function lastXDayChartData(dayList, dayLength) {
+	var filteredDays = dayList.filter(function(day, index) {
+		if( index < dayLength) {
+			return true;
+		}
+	});
+	return dayChartData(filteredDays);
 }
 
 function sortDays(entry1, entry2) {
