@@ -23,8 +23,7 @@ var CircleTimer = React.createClass({
     },
     getInitialState: function() {
         return {
-            r: this.props.radius, 
-            percentage: this.props.percentage
+            percentage: 0
         };
     },
     componentDidMount: function() {
@@ -38,10 +37,9 @@ var CircleTimer = React.createClass({
     },
     timerTick: function() {
         this.elapsedTime = (new Date()) - this.timeStarted;
-        var timerMs = this.props.timerLengthInSeconds * 1000
+        var timerMs = this.props.timerLengthInSeconds * 1000;
         var percentage = ( this.elapsedTime / timerMs ) * 100;
         this.setState({
-            r: this.state.r,
             percentage: percentage
         });
     },
@@ -61,7 +59,7 @@ var CircleTimer = React.createClass({
         this.timeStarted = new Date();
     },
     render: function () {
-        return <GradientCircle percentage={this.state.percentage} />;
+        return <GradientCircle percentage={this.state.percentage} radius={this.props.radius} />;
     }
 });
 

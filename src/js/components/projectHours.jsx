@@ -12,7 +12,7 @@ var ProjectHours = React.createClass({
 	render: function() {
 		return <div className="projectHours">
 					<div className="title">Hours Spent</div>
-					<div className="hours">{this.project.totalHours()}</div>
+					<div className="hours">{this.props.project.totalHours()}</div>
 				</div>;
 	}
 });

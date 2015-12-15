@@ -48,7 +48,7 @@ var Search = React.createClass({
     },
     projectItemSelected: function(item) {
         if( item.key !== 'add' ) {
-            history.push({ pathname: '/project/'+item.key });
+            history.push({ pathname: '/proj/'+item.key });
         }
     },
     addProjectClicked: function(item) {
@@ -98,7 +98,7 @@ var Search = React.createClass({
         var self = this;
         project.load(function(projectData, error) {
             if( !error ) {
-                createBrowserHistory.push('/project', { id: item.key });
+                createBrowserHistory.push('/proj', { id: item.key });
                 this.setState({
                     projectListVisible: false,
                     projectTitleVisible: true,
@@ -114,7 +114,7 @@ function render() {
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={Search} />
-                <Route path="project/:id" component={ProjectHandler} />
+                <Route path="proj/:id" component={ProjectHandler} />
             </Route>
         </Router>, document.getElementById('app'));
 }

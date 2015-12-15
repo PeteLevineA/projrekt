@@ -13,7 +13,7 @@ var ProjectDetails = React.createClass({
 	render: function() {
 		return <div className="projectDetails">
 					<div className="title">
-						<ProjectHours project={project} />
+						<ProjectHours project={this.props.project} />
 					</div>
 					<div className="details">
 						

@@ -4,36 +4,21 @@ var React = require('react');
 var ProjectMenu = require('./projectMenu.jsx');
 var ProjectDetails = require('./projectDetails.jsx');
 var CircleTimer = require('./circleTimer.jsx');
-var RaisedButton = require('material-ui/lib/raised-button');
 var config = require('../../../config/config.json');
 var DataLoader = require('../lib/dataLoader.js');
 var ProjectApiParser = require('../lib/projectApiParser.js');
+var ProjectTimer = require('./projectTimer.jsx');
 
 var ProjectHandler = React.createClass({
 	getInitialState: function() {
 		return {
-			timerButtonLabel: 'start',
-			started: false,
-			project: { name: 'loading' }
+			started: false
 		};
 	},
 	componentDidMount: function() {
 		this.getProject(this.props.params.id);		
 	},
-	handleTouchTap: function() {
-		if(this.state.started) {
-			this.setState({
-				started: false,
-				timerButtonLabel: 'start'
-			});
-		}
-		else {
-			this.setState({
-				started: true,
-				timerButtonLabel: 'end'
-			});
-		}
-	},
+	
 	getProject: function(projectId) {
 		var project = new DataLoader();
 		var self = this;
@@ -45,20 +30,26 @@ var ProjectHandler = React.createClass({
 			}
 		}, config.urls.projectApiUrl + config.urls.projectsUrl + projectId, null, ProjectApiParser );
 	},
+	
+	handleTimerClicked: function(started, elapsedTime) {
+		this.setState({
+				started: started
+			});
+	},
 	render: function() {
+		var projectMenu;
+		var projectDetails;
+		if( this.state.project ) {
+			var projectMenu = <ProjectMenu project={this.state.project} />;
+			var projectDetails = <ProjectDetails project={this.state.project} />;
+		}
 		return <div className="projects">
 			<div className="circleTimer">
 				<CircleTimer timerLengthInSeconds={30} timerStarted={this.state.started} />
-				<div className="projectStart centerFlex">
-					<RaisedButton label={this.state.timerButtonLabel}
-						onTouchTap={this.handleTouchTap}
-						primary={this.state.started}
-						secondary={!this.state.started}
-						onClick={this.handleTouchTap} />
-				</div>
-			</div>
-			<ProjectMenu project={this.state.project} />
-			<ProjectDetails project={this.state.project} />
+				<ProjectTimer handleTimerClicked={this.handleTimerClicked} />
+			</div> 
+			{projectMenu}
+			{projectDetails}
 			</div>;
 	}
 });

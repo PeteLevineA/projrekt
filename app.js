@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var konfig = require('konfig')();
 
 var projects = require('./routes/projects');
-var index = require('./routes/index');
+//var index = require('./routes/index');
 
 var app = express();
 
@@ -33,7 +33,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'bin')));
 
 app.use('/projects', projects);
-app.use('/', index);
+app.use('/proj/*', function(req, res) {
+  res.redirect('/');
+});
+//app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

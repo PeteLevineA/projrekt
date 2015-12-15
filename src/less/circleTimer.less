@@ -1,6 +1,7 @@
 @import "bounceIn.less";
 @import "bounceOut.less";
 @import "transitionAll.less";
+@import "constants.less";
 
 circle {
 	@media screen {
@@ -33,4 +34,26 @@ circle {
 	position: absolute;
 	top: 0px;
 	right: 200px;
+}
+
+.timerText {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top:0px;
+	left:0px;
+}
+.timerText .time {
+	font-size: 64px;
+	margin-top: 32px;
+	color: @lightGray;
+	width: 100%;
+	text-align: center;
+}
+.timerText .interval {
+	font-size: 28px;
+	margin-top: 4px;
+	color: @purple;
+	width: 100%;
+	text-align: center;
 }
