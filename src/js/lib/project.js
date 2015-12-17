@@ -83,15 +83,15 @@ function dayChartData(dayList) {
 	var datasets = [
 		{
 			label: "Daily Hours",
-			fillColor: "",
-			strokeColor: "",
-			highlightFill: "",
-			highlightStroke: "",
+			fillColor: "rgba(30,105,229,.8)",
+			strokeColor: "rgba(170,170,170,.8)",
+			highlightFill: "rgba(30,105,229,1)",
+			highlightStroke: "rgba(60,60,60,.8)",
 			data: dayList.map(function(entry) {
 				return entry.hours
 			})
 		}
-	]
+	];
 	var data = {
 		labels: labels,
 		datasets: datasets
@@ -106,7 +106,46 @@ function lastXDayChartData(dayList, dayLength) {
 	});
 	return dayChartData(filteredDays);
 }
-
+function DayOfWeekAverageChartData(dayList) {
+	var labels = [
+		'Mon', 'Tue', 'Wed',
+		'Thu', 'Fri', 'Sat',
+		'Sun'
+	];
+	var datasetData = [
+		0,0,0,0,0,0,0
+	];
+	var dayOfWeekHours = [
+		{ hours: 0, days: 0 },
+		{ hours: 0, days: 0 },
+		{ hours: 0, days: 0 },
+		{ hours: 0, days: 0 },
+		{ hours: 0, days: 0 },
+		{ hours: 0, days: 0 },
+		{ hours: 0, days: 0 }	
+	];
+	dayList.foreach(function(day) {
+		var hourTrack = dayOfWeekHours[day.date.getDay()];
+		hourTrack.hours += day.hours;
+		hourTrack.days++;
+		datasetData[day.date.getDay()] = hourTrack.hours / hourTrack.days;
+	});
+	var datasets = [
+		{
+			label: "Daily Hours",
+			fillColor: "rgba(30,105,229,.8)",
+			strokeColor: "rgba(170,170,170,.8)",
+			highlightFill: "rgba(30,105,229,1)",
+			highlightStroke: "rgba(60,60,60,.8)",
+			data: datasetData
+		}
+	];
+	var data = {
+		labels: labels,
+		datasets: datasets
+	};
+	return data;
+}
 function sortDays(entry1, entry2) {
 	if( entry1.date > entry2.date ) {
 		return 1;
