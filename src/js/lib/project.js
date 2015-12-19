@@ -1,6 +1,7 @@
 "use strict";
 
 var fetch = require('node-fetch');
+var config = require('../../../config/config.json');
 
 var Project = function(id, name, title, entries, date) {
 	this.id = id;
@@ -8,7 +9,37 @@ var Project = function(id, name, title, entries, date) {
 	this.title = title;
 	this.entries = entries;
 	this.date = date;
+    if( this.entries instanceof Array ) {
+        var self = this;
+        this.entries.forEach(function(entry, index) {
+             if(!(entry.date instanceof Date)) {
+                 var newDateObj = new Date(entry.date);
+                 self.entries[index].date = newDateObj;
+             }
+        });
+    }
 }
+
+Project.prototype.addEntry = function(timeSpentOnProject) {
+    var postData = {
+        date: Date.now(),
+        timeSpent: timeSpentOnProject
+    };
+    var projectUrl = config.urls.projectApiUrl + config.urls.projectsUrl + 
+        config.urls.projectAddEntry + this.id;
+    fetch(projectUrl, {method: 'POST', body: postData})
+            .then(function(res) {
+                return res.json();
+            })
+            .then(function(json) {
+                if( json.error ) {
+                    console.log(json.error);
+                }
+                else {
+                    this.entries.add(postData);
+                }
+            });
+};
 
 Project.prototype.totalHours = function(date) {
 	var totalTime = 0;
@@ -27,42 +58,45 @@ Project.prototype.totalHours = function(date) {
 	return ( ( totalTime / 1000 ) / 60 ) / 60;
 };
 Project.prototype.getDays = function() {
-	var dayCount = 0;
-	var curDay;
-	var sortedEntries = this.entries.sort(sortDays);
-	var dayList = new Array();
-	sortedEntries.forEach(function(entry, index) {
-		if(!curDay) {
-			curDay = new Date(entry.date.getFullYear(), 
-						entry.date.getMonth()+1, entry.date.getDate());
-			dayList[dayCount] = {
-				hours: entry.timeSpent * 1000 * 60 * 60,
-				date: curDay 
-			};
-				
-			dayCount++;
-		}
-		else if( curDay.getDate() !== entry.date.getDate() ||
-				curDay.getMonth() !== entry.date.getMonth() ||
-				curDay.getFullYear() !== entry.date.getFullYear() ) {
-			dayCount++;
-			dayList[dayCount] = {
-				hours: entry.timeSpent * 1000 * 60 * 60,
-				date: curDay 
-			};
-			curDay = new Date(entry.getFullYear(), entry.getMonth()+1, entry.getDate());
-		}
-		else if( curDay.getDate() !== entry.date.getDate() ||
-				curDay.getMonth() !== entry.date.getMonth() ||
-				curDay.getFullYear() !== entry.date.getFullYear() ) {
-			var curHours = dayList[dayCount].hours;
-			dayList[dayCount] = {
-				hours: curHours + (entry.timeSpent * 1000 * 60 * 60),
-				date: curDay 
-			};
-		}
-	});
-	return dayList;
+    if(!this.dayList) {
+        var dayCount = 0;
+        var curDay;
+        var sortedEntries = this.entries.sort(sortDays);
+        this.dayList = new Array();
+        var self = this;
+        sortedEntries.forEach(function(entry, index) {
+            if(!curDay) {
+                curDay = new Date(entry.date.getFullYear(), 
+                            entry.date.getMonth()+1, entry.date.getDate());
+                self.dayList[dayCount] = {
+                    hours: entry.timeSpent * 1000 * 60 * 60,
+                    date: curDay 
+                };
+                    
+                dayCount++;
+            }
+            else if( curDay.getDate() !== entry.date.getDate() ||
+                    curDay.getMonth() !== entry.date.getMonth() ||
+                    curDay.getFullYear() !== entry.date.getFullYear() ) {
+                dayCount++;
+                self.dayList[dayCount] = {
+                    hours: entry.timeSpent * 1000 * 60 * 60,
+                    date: curDay 
+                };
+                curDay = new Date(entry.date.getFullYear(), entry.date.getMonth()+1, entry.date.getDate());
+            }
+            else if( curDay.getDate() !== entry.date.getDate() ||
+                    curDay.getMonth() !== entry.date.getMonth() ||
+                    curDay.getFullYear() !== entry.date.getFullYear() ) {
+                var curHours = self.dayList[dayCount].hours;
+                self.dayList[dayCount] = {
+                    hours: curHours + (entry.timeSpent * 1000 * 60 * 60),
+                    date: curDay 
+                };
+            }
+        });
+    }
+	return this.dayList;
 };
 
 Project.prototype.barChartData = function() {
@@ -73,6 +107,10 @@ Project.prototype.barChartData = function() {
 	else if(dayList.length >=7) {
 		lastXDayChartData(dayList, 7);
 	}
+};
+Project.prototype.dayOfWeekChartData = function() {
+    var dayList = this.getDays();
+    return DayOfWeekAverageChartData(dayList);
 };
 
 function dayChartData(dayList) {
@@ -124,7 +162,7 @@ function DayOfWeekAverageChartData(dayList) {
 		{ hours: 0, days: 0 },
 		{ hours: 0, days: 0 }	
 	];
-	dayList.foreach(function(day) {
+	dayList.forEach(function(day) {
 		var hourTrack = dayOfWeekHours[day.date.getDay()];
 		hourTrack.hours += day.hours;
 		hourTrack.days++;
