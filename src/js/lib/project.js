@@ -78,18 +78,18 @@ Project.prototype.getDays = function() {
             else if( curDay.getDate() !== entry.date.getDate() ||
                     curDay.getMonth() !== entry.date.getMonth() ||
                     curDay.getFullYear() !== entry.date.getFullYear() ) {
-                dayCount++;
                 self.dayList[dayCount] = {
                     hours: entry.timeSpent * 1000 * 60 * 60,
                     date: curDay 
                 };
+                dayCount++;
                 curDay = new Date(entry.date.getFullYear(), entry.date.getMonth()+1, entry.date.getDate());
             }
             else if( curDay.getDate() !== entry.date.getDate() ||
                     curDay.getMonth() !== entry.date.getMonth() ||
                     curDay.getFullYear() !== entry.date.getFullYear() ) {
                 var curHours = self.dayList[dayCount].hours;
-                self.dayList[dayCount] = {
+                self.dayList[dayCount-1] = {
                     hours: curHours + (entry.timeSpent * 1000 * 60 * 60),
                     date: curDay 
                 };
@@ -101,6 +101,7 @@ Project.prototype.getDays = function() {
 
 Project.prototype.barChartData = function() {
 	var dayList = this.getDays();
+    debugger
 	if(dayList.length < 7) {
 		return dayChartData(dayList);
 	}
