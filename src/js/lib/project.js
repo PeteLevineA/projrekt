@@ -101,7 +101,6 @@ Project.prototype.getDays = function() {
 
 Project.prototype.barChartData = function() {
 	var dayList = this.getDays();
-    debugger
 	if(dayList.length < 7) {
 		return dayChartData(dayList);
 	}
