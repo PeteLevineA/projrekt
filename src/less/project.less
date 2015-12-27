@@ -30,3 +30,38 @@
 .projectStart {
 	margin-top: 20px;
 }
+.title {
+    padding: @padding;
+}
+
+@media screen {
+    @media(min-width: 320px) {
+        .projectDetails {
+            position: relative;
+            width: 100%;
+            .hours {
+                font-size: 36px;
+            }
+        }
+    }
+    @media(min-width: 768px) {
+        .projectDetails {
+            position: relative;
+            width: 100%;
+            .hours {
+                font-size: 42px;
+            }
+        }
+    }
+    @media(min-width: 1280px) {
+        .projectDetails {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 500px;
+            .hours {
+                font-size: 60px;
+            }
+        }
+    }
+}

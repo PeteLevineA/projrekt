@@ -10,10 +10,11 @@ var ProjectHours = React.createClass({
 		
 	},
 	render: function() {
-		return <div className="projectHours">
-					<div className="title">Hours Spent</div>
-					<div className="hours">{this.props.project.totalHours()}</div>
-				</div>;
+        var hours = this.props.project.totalHours();
+        hours = (Math.round(hours * 10) / 10).toFixed(1);
+		return <span className="projectHours">
+                    {hours} Hours Spent
+				</span>;
 	}
 });
 

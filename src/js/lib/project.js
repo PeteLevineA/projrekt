@@ -69,7 +69,7 @@ Project.prototype.getDays = function() {
                 curDay = new Date(entry.date.getFullYear(), 
                             entry.date.getMonth()+1, entry.date.getDate());
                 self.dayList[dayCount] = {
-                    hours: entry.timeSpent * 1000 * 60 * 60,
+                    hours: entry.timeSpent / 1000 / 60 / 60,
                     date: curDay 
                 };
                     
@@ -79,7 +79,7 @@ Project.prototype.getDays = function() {
                     curDay.getMonth() !== entry.date.getMonth() ||
                     curDay.getFullYear() !== entry.date.getFullYear() ) {
                 self.dayList[dayCount] = {
-                    hours: entry.timeSpent * 1000 * 60 * 60,
+                    hours: entry.timeSpent / 1000 / 60 / 60,
                     date: curDay 
                 };
                 dayCount++;
@@ -90,7 +90,7 @@ Project.prototype.getDays = function() {
                     curDay.getFullYear() !== entry.date.getFullYear() ) {
                 var curHours = self.dayList[dayCount].hours;
                 self.dayList[dayCount-1] = {
-                    hours: curHours + (entry.timeSpent * 1000 * 60 * 60),
+                    hours: curHours + (entry.timeSpent / 1000 / 60 / 60),
                     date: curDay 
                 };
             }

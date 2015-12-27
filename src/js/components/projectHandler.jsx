@@ -8,7 +8,6 @@ var config = require('../../../config/config.json');
 var DataLoader = require('../lib/dataLoader.js');
 var ProjectApiParser = require('../lib/projectApiParser.js');
 var ProjectTimer = require('./projectTimer.jsx');
-var BarChart = require("react-chartjs").Bar;
 
 var ProjectHandler = React.createClass({
 	getInitialState: function() {
@@ -48,8 +47,6 @@ var ProjectHandler = React.createClass({
 		if( this.state.project ) {
 			projectMenu = <ProjectMenu project={this.state.project} />;
 			projectDetails = <ProjectDetails project={this.state.project} />;
-            projectHours = <BarChart data={this.state.project.barChartData()} />;
-            projectAverageDailyHours = <BarChart data={this.state.project.dayOfWeekChartData()} />;
 		}
 		return <div className="projects">
 			<div className="circleTimer">
@@ -58,8 +55,6 @@ var ProjectHandler = React.createClass({
 			</div> 
 			{projectMenu}
 			{projectDetails}
-            {projectHours}
-            {projectAverageDailyHours}
 			</div>;
 	}
 });
