@@ -34,6 +34,34 @@
     padding: @padding;
 }
 
+.projectDetails {
+    
+}
+
+.hoursTitle {
+    font-weight: 500;
+}
+
+.barTitle {
+    color: @purple;
+    position: absolute;
+    margin-top: @padding;
+    width: 100%;
+    text-align: center;
+    background: rgba(0,0,0,0.4);
+    text-shadow:
+        -1px -1px 0 rgba(220,220,220, .15),  
+        1px -1px 0 rgba(220,220,220, .15),
+        -1px 1px 0 rgba(220,220,220, .15),
+        1px 1px 0 rgba(220,220,220, .15);
+}
+
+.projectTitle {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
 @media screen {
     @media(min-width: 320px) {
         .projectDetails {
@@ -42,6 +70,12 @@
             .hours {
                 font-size: 36px;
             }
+            .details .barTitle {
+                font-size: 18px;
+            }
+        }
+        .projectTitle {
+            font-size: 36px;
         }
     }
     @media(min-width: 768px) {
@@ -51,6 +85,12 @@
             .hours {
                 font-size: 42px;
             }
+            .details .barTitle {
+                font-size: 24px;
+            }
+        }
+        .projectTitle {
+            font-size: 42px;
         }
     }
     @media(min-width: 1280px) {
@@ -62,6 +102,12 @@
             .hours {
                 font-size: 60px;
             }
+            .details .barTitle {
+                font-size: 28px;
+            }
+        }
+        .projectTitle {
+            font-size: 60px;
         }
     }
 }

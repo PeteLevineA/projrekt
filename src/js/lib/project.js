@@ -57,6 +57,8 @@ Project.prototype.totalHours = function(date) {
 	});
 	return ( ( totalTime / 1000 ) / 60 ) / 60;
 };
+// This function grabs hours from each entry and 
+// parses them to specific dates.
 Project.prototype.getDays = function() {
     if(!this.dayList) {
         var dayCount = 0;
@@ -67,7 +69,7 @@ Project.prototype.getDays = function() {
         sortedEntries.forEach(function(entry, index) {
             if(!curDay) {
                 curDay = new Date(entry.date.getFullYear(), 
-                            entry.date.getMonth()+1, entry.date.getDate());
+                            entry.date.getMonth(), entry.date.getDate());
                 self.dayList[dayCount] = {
                     hours: entry.timeSpent / 1000 / 60 / 60,
                     date: curDay 
@@ -83,7 +85,7 @@ Project.prototype.getDays = function() {
                     date: curDay 
                 };
                 dayCount++;
-                curDay = new Date(entry.date.getFullYear(), entry.date.getMonth()+1, entry.date.getDate());
+                curDay = new Date(entry.date.getFullYear(), entry.date.getMonth(), entry.date.getDate());
             }
             else if( curDay.getDate() !== entry.date.getDate() ||
                     curDay.getMonth() !== entry.date.getMonth() ||
@@ -98,7 +100,8 @@ Project.prototype.getDays = function() {
     }
 	return this.dayList;
 };
-
+// Grabs the latest entries and forms 
+// barchart data for chartjs
 Project.prototype.barChartData = function() {
 	var dayList = this.getDays();
 	if(dayList.length < 7) {
@@ -112,10 +115,10 @@ Project.prototype.dayOfWeekChartData = function() {
     var dayList = this.getDays();
     return DayOfWeekAverageChartData(dayList);
 };
-
+// chartjs data object for the day entries
 function dayChartData(dayList) {
 	var labels = dayList.map(function(entry) {
-		return entry.date.getFullYear() + '/' + 
+        return entry.date.getFullYear() + '/' + 
 			(entry.date.getMonth()+1) + '/' + entry.date.getDate();
 	});
 	var datasets = [
@@ -144,11 +147,12 @@ function lastXDayChartData(dayList, dayLength) {
 	});
 	return dayChartData(filteredDays);
 }
+// chartjs data object for entries for days of the week
 function DayOfWeekAverageChartData(dayList) {
 	var labels = [
-		'Mon', 'Tue', 'Wed',
-		'Thu', 'Fri', 'Sat',
-		'Sun'
+		'Sun','Mon', 'Tue', 
+		'Wed','Thu', 'Fri', 
+		'Sat'
 	];
 	var datasetData = [
 		0,0,0,0,0,0,0

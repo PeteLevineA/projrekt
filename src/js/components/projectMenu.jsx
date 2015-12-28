@@ -13,7 +13,7 @@ var ProjectMenu = React.createClass({
 	render: function() {
 		return <ReactCSSTransitionGroup transitionName="projectMenu" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
         	<div key="projectMenu" onHover={this.handleHover}>
-				<span className="title">{this.props.project.name}</span>
+				<span className="projectTitle">{this.props.project.name}</span>
 			</div>
         </ReactCSSTransitionGroup>;
 	}
