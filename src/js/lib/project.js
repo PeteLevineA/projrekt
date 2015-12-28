@@ -26,8 +26,9 @@ Project.prototype.addEntry = function(timeSpentOnProject) {
         timeSpent: timeSpentOnProject
     };
     var projectUrl = config.urls.projectApiUrl + config.urls.projectsUrl + 
-        config.urls.projectAddEntry + this.id;
-    fetch(projectUrl, {method: 'POST', body: postData})
+        config.urls.projectAddEntry + this.id + "?date=" + Date.now() + 
+        "&timeSpent=" + timeSpentOnProject;
+    fetch(projectUrl, {method: 'GET'})
             .then(function(res) {
                 return res.json();
             })
@@ -40,7 +41,7 @@ Project.prototype.addEntry = function(timeSpentOnProject) {
                 }
             });
 };
-
+// gets the total hours for all project entries
 Project.prototype.totalHours = function(date) {
 	var totalTime = 0;
 	this.entries.forEach(function(entry, index) {
@@ -166,6 +167,10 @@ function DayOfWeekAverageChartData(dayList) {
 		{ hours: 0, days: 0 },
 		{ hours: 0, days: 0 }	
 	];
+    // assign hours for each day of the week based
+    // on the entries date.getday
+    // getday function returns 0-6 for the day of the week
+    // of that date.
 	dayList.forEach(function(day) {
 		var hourTrack = dayOfWeekHours[day.date.getDay()];
 		hourTrack.hours += day.hours;
@@ -188,6 +193,8 @@ function DayOfWeekAverageChartData(dayList) {
 	};
 	return data;
 }
+// sort function to sort all entries based on the date
+// property on the project object
 function sortDays(entry1, entry2) {
 	if( entry1.date > entry2.date ) {
 		return 1;
