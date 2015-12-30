@@ -88,10 +88,10 @@ Project.prototype.getDays = function() {
                 dayCount++;
                 curDay = new Date(entry.date.getFullYear(), entry.date.getMonth(), entry.date.getDate());
             }
-            else if( curDay.getDate() !== entry.date.getDate() ||
-                    curDay.getMonth() !== entry.date.getMonth() ||
-                    curDay.getFullYear() !== entry.date.getFullYear() ) {
-                var curHours = self.dayList[dayCount].hours;
+            else if( curDay.getDate() === entry.date.getDate() &&
+                    curDay.getMonth() === entry.date.getMonth() &&
+                    curDay.getFullYear() === entry.date.getFullYear() ) {
+                var curHours = self.dayList[dayCount-1].hours;
                 self.dayList[dayCount-1] = {
                     hours: curHours + (entry.timeSpent / 1000 / 60 / 60),
                     date: curDay 
