@@ -18,7 +18,7 @@ var Project = function(id, name, title, entries, date) {
              }
         });
     }
-}
+};
 
 Project.prototype.addEntry = function(timeSpentOnProject) {
     var postData = {
