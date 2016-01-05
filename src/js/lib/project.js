@@ -1,7 +1,6 @@
 "use strict";
 
 var fetch = require('node-fetch');
-var config = require('../../../config/config.json');
 
 var Project = function(id, name, title, entries, date) {
 	this.id = id;
@@ -20,14 +19,12 @@ var Project = function(id, name, title, entries, date) {
     }
 };
 
-Project.prototype.addEntry = function(timeSpentOnProject) {
+Project.prototype.addEntry = function(projectUrl, timeSpentOnProject) {
     var postData = {
         date: Date.now(),
         timeSpent: timeSpentOnProject
     };
-    var projectUrl = config.urls.projectApiUrl + config.urls.projectsUrl + 
-        config.urls.projectAddEntry + this.id + "?date=" + Date.now() + 
-        "&timeSpent=" + timeSpentOnProject;
+    
     fetch(projectUrl, {method: 'GET'})
             .then(function(res) {
                 return res.json();

@@ -36,7 +36,10 @@ var ProjectHandler = React.createClass({
 				started: started
 			});
         if( !started ) {
-            this.state.project.addEntry(elapsedTime);
+			var projectUrl = config.urls.projectApiUrl + config.urls.projectsUrl + 
+				config.urls.projectAddEntry + this.id + "?date=" + Date.now() + 
+				"&timeSpent=" + timeSpentOnProject;
+            this.state.project.addEntry(projectUrl, elapsedTime);
         }
 	},
 	render: function() {
