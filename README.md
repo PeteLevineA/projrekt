@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/PeteLevineA/projrekt.svg?branch=master)](https://travis-ci.org/PeteLevineA/projrekt) [![devDependency Status](https://david-dm.org/PeteLevineA/projrekt/dev-status.svg)](https://david-dm.org/PeteLevineA/projrekt#info=devDependencies)
+
+----------
 ## proj[rekt]##
 
 A simple to use project time management system. Tracks hours for any project used with the push of a button.
